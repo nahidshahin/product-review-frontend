@@ -1,31 +1,54 @@
-# Pokémon Feature Flags demo
+# React + TypeScript + Vite
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/9242ef3b-3f43-4153-8d3f-65054c333a43/deploy-status)](https://app.netlify.com/sites/pokemon-ld/deploys)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Here's a demo for integrating feature flags into a React project! Built with React, Vite, [the PokeAPI](https://pokeapi.co/), and [LaunchDarkly](https://launchdarkly.com/)!
+Currently, two official plugins are available:
 
-When the feature flag is off, only Normal type Pokémon can be searched for in the app. When the flag is turned on, then any Pokémon can be queried!
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Deploy your own
+## Expanding the ESLint configuration
 
-### LaunchDarkly setup
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-Once you've signed up for [LaunchDarkly](https://launchdarkly.com/), create a feature flag. I call mine `testaroni`, and you should too if you want this to work out of the box. Otherwise, you can change it in the `isAllowed` function in `Pokemon.jsx`. Under **Flag variations**, make it a **String** type and add an "all" type, and any other Pokémon types you'd like to include:
-
-![image](https://user-images.githubusercontent.com/1454517/118706538-143c0580-b7df-11eb-88ef-08db3391e17d.png)
-
-After that, you're all set! You can toggle it on and off in the LaunchDarkly UI, set the default rules, segment which users get which types, and more.
-
-### Netlify setup
-
-Click this button to deploy your own version of this project to Netlify!
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/cassidoo/pokemon-feature-flags&utm_source=github&utm_medium=ldstream-cs&utm_campaign=devex-cs)
-
-You'll need to add your environment variables after cloning. Structure your `.env.local` file like so (you can find your client ID under [Account Settings => Projects](https://app.launchdarkly.com/settings/projects)):
-
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
 ```
-VITE_LD_CLIENT_KEY=your_key
-```
 
-...and then plop it into Netlify, and you're done!
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
