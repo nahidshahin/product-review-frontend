@@ -17,7 +17,7 @@ const ProductList = () => {
 
   const page = searchParams.get('page') || '1';
   const category = searchParams.get('category') || '';
-  const backend = 'http://104.42.128.92:5000/products'
+  const backend = 'https://104.42.128.92/products'
 
   const fetchProducts = async () => {
     try {

@@ -14,7 +14,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
-  const backend = 'http://104.42.128.92:5000/products'
+  const backend = 'https://104.42.128.92/products'
 
   const fetchProductAndReviews = async () => {
     try {
